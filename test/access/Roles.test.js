@@ -52,7 +52,7 @@ contract('Roles', function ([_, owner, ...otherAccounts]) {
       it('accounts can be granted a role multiple times', async function () {
         await this.contract.grantRole(ROLE, authorized, { from: admin });
         const receipt = await this.contract.grantRole(ROLE, authorized, { from: admin });
-        await expectEvent.not.inTransaction(receipt.tx, RolesMock, 'RoleGranted');
+        expectEvent.notEmitted(receipt, 'RoleRevoked');
       });
     });
 
@@ -61,7 +61,7 @@ contract('Roles', function ([_, owner, ...otherAccounts]) {
         expect(await this.contract.hasRole(ROLE, authorized)).to.equal(false);
 
         const receipt = await this.contract.revokeRole(ROLE, authorized, { from: admin });
-        await expectEvent.not.inTransaction(receipt.tx, RolesMock, 'RoleRevoked');
+        expectEvent.notEmitted(receipt, 'RoleRevoked');
       });
 
       context('with granted role', function () {
@@ -87,7 +87,7 @@ contract('Roles', function ([_, owner, ...otherAccounts]) {
           await this.contract.revokeRole(ROLE, authorized, { from: admin });
 
           const receipt = await this.contract.revokeRole(ROLE, authorized, { from: admin });
-          await expectEvent.not.inTransaction(receipt.tx, RolesMock, 'RoleRevoked');
+          expectEvent.notEmitted(receipt, 'RoleRevoked');
         });
       });
     });
@@ -95,7 +95,7 @@ contract('Roles', function ([_, owner, ...otherAccounts]) {
     describe('renouncing', function () {
       it('roles that are not had can be renounced', async function () {
         const receipt = await this.contract.renounceRole(ROLE, authorized, { from: authorized });
-        await expectEvent.not.inTransaction(receipt.tx, RolesMock, 'RoleRevoked');
+        expectEvent.notEmitted(receipt, 'RoleRevoked');
       });
 
       context('with granted role', function () {
@@ -121,7 +121,7 @@ contract('Roles', function ([_, owner, ...otherAccounts]) {
           await this.contract.renounceRole(ROLE, authorized, { from: authorized });
 
           const receipt = await this.contract.renounceRole(ROLE, authorized, { from: authorized });
-          await expectEvent.not.inTransaction(receipt.tx, RolesMock, 'RoleRevoked');
+          expectEvent.notEmitted(receipt, 'RoleRevoked');
         });
       });
     });
@@ -145,7 +145,13 @@ contract('Roles', function ([_, owner, ...otherAccounts]) {
 
     describe('setting role admin', function () {
       beforeEach(async function () {
-        await this.contract.setRoleAdmin(ROLE, OTHER_ROLE);
+        const receipt = await this.contract.setRoleAdmin(ROLE, OTHER_ROLE);
+        expectEvent(receipt, 'RoleAdminChanged', {
+          role: ROLE,
+          previousAdminRole: DEFAULT_ADMIN_ROLE,
+          newAdminRole: OTHER_ROLE,
+        });
+
         await this.contract.grantRole(OTHER_ROLE, otherAdmin, { from: admin });
       });
 
