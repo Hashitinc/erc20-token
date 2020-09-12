@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.6.0;
+pragma solidity ^0.7.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20Capped.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Burnable.sol";
@@ -68,7 +68,6 @@ contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
         bool transferEnabled,
         bool mintingFinished
     )
-        public
         ERC20Capped(cap)
         ERC1363(name, symbol)
     {

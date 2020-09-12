@@ -22,7 +22,7 @@ npm install @vittominacori/erc20-token
 ## Usage
 
 ```solidity
-pragma solidity ^0.6.0;
+pragma solidity ^0.7.0;
 
 import "@vittominacori/erc20-token/contracts/ERC20Base.sol";
 
@@ -36,7 +36,7 @@ contract MyToken is ERC20Base {
         uint256 initialSupply,
         bool transferEnabled,
         bool mintingFinished
-    ) public payable ERC20Base(name, symbol, decimals, cap, initialSupply, transferEnabled, mintingFinished) {}
+    ) ERC20Base(name, symbol, decimals, cap, initialSupply, transferEnabled, mintingFinished) {}
 
   // your stuff
 }
