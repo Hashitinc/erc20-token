@@ -1,7 +1,7 @@
 # ERC20 Token
 
 [![NPM Package](https://img.shields.io/npm/v/@vittominacori/erc20-token.svg?style=flat-square)](https://www.npmjs.com/package/@vittominacori/erc20-token)
-[![Build Status](https://travis-ci.org/vittominacori/erc20-token.svg?branch=master)](https://travis-ci.org/vittominacori/erc20-token)
+[![Build Status](https://travis-ci.com/vittominacori/erc20-token.svg?branch=master)](https://travis-ci.com/vittominacori/erc20-token)
 [![Coverage Status](https://coveralls.io/repos/github/vittominacori/erc20-token/badge.svg?branch=master)](https://coveralls.io/github/vittominacori/erc20-token?branch=master)
 [![MIT licensed](https://img.shields.io/github/license/vittominacori/erc20-token.svg)](https://github.com/vittominacori/erc20-token/blob/master/LICENSE)
 
