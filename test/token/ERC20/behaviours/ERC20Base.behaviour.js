@@ -5,6 +5,7 @@ const { shouldBehaveLikeTokenRecover } = require('eth-token-recover/test/TokenRe
 const { shouldBehaveLikeERC1363 } = require('erc-payable-token/test/token/ERC1363/ERC1363.behaviour');
 
 const { shouldBehaveLikeERC20 } = require('./ERC20.behaviour');
+const { shouldBehaveLikeERC20Mintable } = require('./ERC20Mintable.behaviour');
 const { shouldBehaveLikeERC20Capped } = require('./ERC20Capped.behaviour');
 const { shouldBehaveLikeERC20Burnable } = require('./ERC20Burnable.behaviour');
 
@@ -17,6 +18,13 @@ function shouldBehaveLikeERC20Base (
       await this.token.grantRole((await this.token.MINTER_ROLE()), minter, { from: owner });
     });
     shouldBehaveLikeERC20(_name, _symbol, _decimals, [owner, anotherAccount, recipient], _initialSupply);
+  });
+
+  context('like a ERC20Mintable', function () {
+    beforeEach(async function () {
+      await this.token.grantRole((await this.token.MINTER_ROLE()), minter, { from: owner });
+    });
+    shouldBehaveLikeERC20Mintable(minter, anotherAccount, recipient, _initialSupply);
   });
 
   context('like a ERC20Capped', function () {
