@@ -57,7 +57,6 @@ contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
      * @param cap Maximum number of tokens mintable
      * @param initialSupply Initial token supply
      * @param transferEnabled If transfer is enabled on token creation
-     * @param mintingFinished If minting is finished after token creation
      */
     constructor(
         string memory name,
@@ -65,25 +64,15 @@ contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
         uint8 decimals,
         uint256 cap,
         uint256 initialSupply,
-        bool transferEnabled,
-        bool mintingFinished
+        bool transferEnabled
     )
         ERC20Capped(cap)
         ERC1363(name, symbol)
     {
-        require(
-            mintingFinished == false || cap == initialSupply,
-            "ERC20Base: if finish minting, cap must be equal to initialSupply"
-        );
-
         _setupDecimals(decimals);
 
         if (initialSupply > 0) {
             _mint(owner(), initialSupply);
-        }
-
-        if (mintingFinished) {
-            finishMinting();
         }
 
         if (transferEnabled) {

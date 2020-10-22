@@ -39,7 +39,6 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
             _cap,
             0,
             false,
-            false,
             { from: owner },
           );
         });
@@ -51,6 +50,10 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
 
           it('owner balance should be equal to zero', async function () {
             (await this.token.balanceOf(owner)).should.be.bignumber.equal(new BN(0));
+          });
+
+          it('mintingFinished should be false', async function () {
+            (await this.token.mintingFinished()).should.be.equal(false);
           });
         });
       });
@@ -64,7 +67,6 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
             _cap,
             _initialSupply,
             false,
-            false,
             { from: owner },
           );
         });
@@ -76,6 +78,10 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
 
           it('owner balance should be equal to initial supply', async function () {
             (await this.token.balanceOf(owner)).should.be.bignumber.equal(_initialSupply);
+          });
+
+          it('mintingFinished should be false', async function () {
+            (await this.token.mintingFinished()).should.be.equal(false);
           });
         });
       });
@@ -89,7 +95,6 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
             _cap,
             _initialSupply,
             true,
-            false,
             { from: owner },
           );
         });
@@ -108,69 +113,12 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
             _cap,
             _initialSupply,
             false,
-            false,
             { from: owner },
           );
         });
 
         it('transferEnabled should be false', async function () {
           (await this.token.transferEnabled()).should.be.equal(false);
-        });
-      });
-
-      describe('with minting finished during deploy', function () {
-        it('requires cap and initial supply to be the same', async function () {
-          await expectRevert(
-            ERC20Base.new(
-              _name,
-              _symbol,
-              _decimals,
-              _cap,
-              _initialSupply,
-              true,
-              true,
-              { from: owner },
-            ),
-            'ERC20Base: if finish minting, cap must be equal to initialSupply',
-          );
-        });
-
-        describe('once deployed', function () {
-          beforeEach(async function () {
-            this.token = await ERC20Base.new(
-              _name,
-              _symbol,
-              _decimals,
-              _cap,
-              _cap,
-              true,
-              true,
-              { from: owner },
-            );
-          });
-
-          it('mintingFinished should be true', async function () {
-            (await this.token.mintingFinished()).should.be.equal(true);
-          });
-        });
-      });
-
-      describe('with minting not finished during deploy', function () {
-        beforeEach(async function () {
-          this.token = await ERC20Base.new(
-            _name,
-            _symbol,
-            _decimals,
-            _cap,
-            _initialSupply,
-            false,
-            false,
-            { from: owner },
-          );
-        });
-
-        it('mintingFinished should be false', async function () {
-          (await this.token.mintingFinished()).should.be.equal(false);
         });
       });
     });
@@ -184,7 +132,6 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
         _decimals,
         _cap,
         _initialSupply,
-        false,
         false,
         { from: owner },
       );
