@@ -10,21 +10,23 @@ const { shouldBehaveLikeERC20Capped } = require('./ERC20Capped.behaviour');
 const { shouldBehaveLikeERC20Burnable } = require('./ERC20Burnable.behaviour');
 
 function shouldBehaveLikeERC20Base (
-  [owner, anotherAccount, minter, operator, recipient, thirdParty],
+  [owner, other, minter, operator, recipient, thirdParty],
   [_name, _symbol, _decimals, _cap, _initialSupply],
 ) {
   context('like a ERC20', function () {
     beforeEach(async function () {
       await this.token.grantRole((await this.token.MINTER_ROLE()), minter, { from: owner });
     });
-    shouldBehaveLikeERC20(_name, _symbol, _decimals, [owner, anotherAccount, recipient], _initialSupply);
+
+    shouldBehaveLikeERC20(_name, _symbol, _decimals, _initialSupply, [owner, other, thirdParty]);
   });
 
   context('like a ERC20Mintable', function () {
     beforeEach(async function () {
       await this.token.grantRole((await this.token.MINTER_ROLE()), minter, { from: owner });
     });
-    shouldBehaveLikeERC20Mintable(minter, anotherAccount, recipient, _initialSupply);
+
+    shouldBehaveLikeERC20Mintable(_initialSupply, [owner, thirdParty]);
   });
 
   context('like a ERC20Capped', function () {
@@ -34,15 +36,16 @@ function shouldBehaveLikeERC20Base (
       // NOTE: burning initial supply to test cap
       await this.token.burn(_initialSupply, { from: owner });
     });
-    shouldBehaveLikeERC20Capped(minter, [anotherAccount], _cap);
+
+    shouldBehaveLikeERC20Capped(_cap, [owner, other]);
   });
 
   context('like a ERC20Burnable', function () {
-    shouldBehaveLikeERC20Burnable(owner, _initialSupply, [owner]);
+    shouldBehaveLikeERC20Burnable(_initialSupply, [owner, thirdParty]);
   });
 
   context('like a ERC1363', function () {
-    shouldBehaveLikeERC1363([owner, anotherAccount, recipient], _initialSupply);
+    shouldBehaveLikeERC1363([owner, other, recipient], _initialSupply);
   });
 
   context('ERC20Base token behaviours', function () {
@@ -68,17 +71,17 @@ function shouldBehaveLikeERC20Base (
 
           function shouldMint (amount) {
             beforeEach(async function () {
-              ({ logs: this.logs } = await this.token.mint(anotherAccount, amount, { from }));
+              ({ logs: this.logs } = await this.token.mint(other, amount, { from }));
             });
 
             it('mints the requested amount', async function () {
-              (await this.token.balanceOf(anotherAccount)).should.be.bignumber.equal(amount);
+              (await this.token.balanceOf(other)).should.be.bignumber.equal(amount);
             });
 
             it('emits a mint and a transfer event', async function () {
               expectEvent.inLogs(this.logs, 'Transfer', {
                 from: ZERO_ADDRESS,
-                to: anotherAccount,
+                to: other,
                 value: amount,
               });
             });
@@ -86,11 +89,11 @@ function shouldBehaveLikeERC20Base (
         });
 
         context('when the sender doesn\'t have minting permission', function () {
-          const from = anotherAccount;
+          const from = other;
 
           it('reverts', async function () {
             await expectRevert(
-              this.token.mint(anotherAccount, amount, { from }),
+              this.token.mint(other, amount, { from }),
               'Roles: caller does not have the MINTER role',
             );
           });
@@ -121,9 +124,9 @@ function shouldBehaveLikeERC20Base (
           });
 
           it('should fail transferFrom', async function () {
-            await this.token.approve(anotherAccount, _initialSupply, { from: thirdParty });
+            await this.token.approve(other, _initialSupply, { from: thirdParty });
             await expectRevert(
-              this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: anotherAccount }),
+              this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: other }),
               'ERC20Base: transfer is not enabled or from does not have the OPERATOR role',
             );
           });
@@ -139,8 +142,8 @@ function shouldBehaveLikeERC20Base (
           });
 
           it('should transferFrom', async function () {
-            await this.token.approve(anotherAccount, _initialSupply, { from: thirdParty });
-            await this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: anotherAccount });
+            await this.token.approve(other, _initialSupply, { from: thirdParty });
+            await this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: other });
           });
         });
       });
@@ -164,8 +167,8 @@ function shouldBehaveLikeERC20Base (
           });
 
           it('should transferFrom', async function () {
-            await this.token.approve(anotherAccount, _initialSupply, { from: thirdParty });
-            await this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: anotherAccount });
+            await this.token.approve(other, _initialSupply, { from: thirdParty });
+            await this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: other });
           });
         });
 
@@ -179,8 +182,8 @@ function shouldBehaveLikeERC20Base (
           });
 
           it('should transferFrom', async function () {
-            await this.token.approve(anotherAccount, _initialSupply, { from: thirdParty });
-            await this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: anotherAccount });
+            await this.token.approve(other, _initialSupply, { from: thirdParty });
+            await this.token.transferFrom(thirdParty, recipient, _initialSupply, { from: other });
           });
         });
       });

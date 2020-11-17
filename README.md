@@ -34,9 +34,8 @@ contract MyToken is ERC20Base {
         uint8 decimals,
         uint256 cap,
         uint256 initialSupply,
-        bool transferEnabled,
-        bool mintingFinished
-    ) ERC20Base(name, symbol, decimals, cap, initialSupply, transferEnabled, mintingFinished) {}
+        bool isTransferEnabled
+    ) ERC20Base(name, symbol, decimals, cap, initialSupply, isTransferEnabled) {}
 
   // your stuff
 }
@@ -75,26 +74,26 @@ npm run test
 ```
 
 
-### Usage (using Buidler)
+### Usage (using Hardhat)
 
-Open the Buidler console
+Open the Hardhat console
 
 ```bash
-npm run buidler:console
+npm run hardhat:console
 ```
 
 
 #### Compile
 
 ```bash
-npm run buidler:compile
+npm run hardhat:compile
 ```
 
 
 #### Test
 
 ```bash
-npm run buidler:test
+npm run hardhat:test
 ```
 
 

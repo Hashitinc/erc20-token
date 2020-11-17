@@ -4,7 +4,7 @@ const { shouldBehaveLikeERC20Base } = require('./token/ERC20/behaviours/ERC20Bas
 
 const ERC20Base = artifacts.require('ERC20Base');
 
-contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipient, thirdParty]) {
+contract('ERC20Base', function ([owner, other, minter, operator, recipient, thirdParty]) {
   const _name = 'ERC20Base';
   const _symbol = 'ERC20';
   const _decimals = new BN(18);
@@ -138,7 +138,7 @@ contract('ERC20Base', function ([owner, anotherAccount, minter, operator, recipi
     });
 
     shouldBehaveLikeERC20Base(
-      [owner, anotherAccount, minter, operator, recipient, thirdParty],
+      [owner, other, minter, operator, recipient, thirdParty],
       [_name, _symbol, _decimals, _cap, _initialSupply],
     );
   });

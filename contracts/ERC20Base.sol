@@ -56,7 +56,7 @@ contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
      * @param decimals Number of decimals. All the operations are done using the smallest and indivisible token unit
      * @param cap Maximum number of tokens mintable
      * @param initialSupply Initial token supply
-     * @param transferEnabled If transfer is enabled on token creation
+     * @param isTransferEnabled If transfer is enabled on token creation
      */
     constructor(
         string memory name,
@@ -64,7 +64,7 @@ contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
         uint8 decimals,
         uint256 cap,
         uint256 initialSupply,
-        bool transferEnabled
+        bool isTransferEnabled
     )
         ERC20Capped(cap)
         ERC1363(name, symbol)
@@ -75,7 +75,7 @@ contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
             _mint(owner(), initialSupply);
         }
 
-        if (transferEnabled) {
+        if (isTransferEnabled) {
             enableTransfer();
         }
     }
