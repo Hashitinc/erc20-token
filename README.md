@@ -1,7 +1,7 @@
 # ERC20 Token
 
 [![NPM Package](https://img.shields.io/npm/v/@vittominacori/erc20-token.svg?style=flat-square)](https://www.npmjs.com/package/@vittominacori/erc20-token)
-[![Build Status](https://travis-ci.com/vittominacori/erc20-token.svg?branch=master)](https://travis-ci.com/vittominacori/erc20-token)
+[![CI](https://github.com/vittominacori/erc20-token/workflows/CI/badge.svg?branch=master)](https://github.com/vittominacori/erc20-token/actions/)
 [![Coverage Status](https://coveralls.io/repos/github/vittominacori/erc20-token/badge.svg?branch=master)](https://coveralls.io/github/vittominacori/erc20-token?branch=master)
 [![MIT licensed](https://img.shields.io/github/license/vittominacori/erc20-token.svg)](https://github.com/vittominacori/erc20-token/blob/master/LICENSE)
 
@@ -43,36 +43,31 @@ contract MyToken is ERC20Base {
 
 ## Development
 
-
 ### Install dependencies
 
 ```bash
 npm install
 ```
 
-
 ### Usage (using Truffle)
 
 Open the Truffle console
 
 ```bash
-npm run console
+npm run truffle:console
 ```
-
 
 #### Compile
 
 ```bash
-npm run compile
+npm run truffle:compile
 ```
-
 
 #### Test
 
 ```bash
-npm run test
+npm run truffle:test
 ```
-
 
 ### Usage (using Hardhat)
 
@@ -82,13 +77,11 @@ Open the Hardhat console
 npm run hardhat:console
 ```
 
-
 #### Compile
 
 ```bash
 npm run hardhat:compile
 ```
-
 
 #### Test
 
@@ -96,13 +89,11 @@ npm run hardhat:compile
 npm run hardhat:test
 ```
 
-
-### Code Coverage
+#### Code Coverage
 
 ```bash
-npm run coverage
+npm run hardhat:coverage
 ```
-
 
 ## Linter
 
@@ -123,7 +114,6 @@ Use ESLint and fix
 ```bash
 npm run lint:fix
 ```
-
 
 ## License
 

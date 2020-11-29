@@ -13,7 +13,7 @@ import "./access/Roles.sol";
  * @author Vittorio Minacori (https://github.com/vittominacori)
  * @dev Implementation of the ERC20Base
  */
-contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, Roles, TokenRecover {
+contract ERC20Base is ERC20Capped, ERC20Burnable, ERC1363, TokenRecover, Roles {
 
     // indicates if minting is finished
     bool private _mintingFinished = false;
